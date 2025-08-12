@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smooth Drag + Button Press Effect</title>
+<style>
+  body {
+    background: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+  }
+
+  /* Main button */
+  .image-button {
+    border: none;
+    padding: 0;
+    background: none;
+    position: relative;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .image-button img {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+  }
+
+  /* Back draggable image */
+  .back-img {
+    position: absolute;
+    width: 100px;
+    top:38%;
+    
+    z-index: 1;
+    cursor: grab;
+    user-select: none;
+    will-change: transform, top, left;
+    transition: transform 0.2s ease;
+  }
+</style>
+</head>
+<body>
+
+<!-- Draggable BACK image -->
+<img class="back-img" src="./cat-pink-glasses-pixel-art-600nw-2420359797-removebg-preview.png" alt="Back Image">
+
+<!-- Button in front -->
+<button class="image-button">
+  <img src="./up.png" alt="Button Image">
+</button>
+
+<script>
+  const backImg = document.querySelector(".back-img");
+  const button = document.querySelector(".image-button");
+  const originalPosition = { top: backImg.offsetTop, left: backImg.offsetLeft };
+  let isDragging = false;
+  let targetX = originalPosition.left;
+  let targetY = originalPosition.top;
+  let offsetX, offsetY;
+  let velocityX = 0, velocityY = 0;
+
+  function animate() {
+    const currentX = parseFloat(backImg.style.left) || originalPosition.left;
+    const currentY = parseFloat(backImg.style.top) || originalPosition.top;
+
+    const dx = targetX - currentX;
+    const dy = targetY - currentY;
+
+    velocityX = velocityX * 0.8 + dx * 0.2;
+    velocityY = velocityY * 0.8 + dy * 0.2;
+
+    backImg.style.left = currentX + velocityX + "px";
+    backImg.style.top = currentY + velocityY + "px";
+
+    requestAnimationFrame(animate);
+  }
+
+  // Dragging
+  backImg.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    offsetX = e.clientX - backImg.getBoundingClientRect().left;
+    offsetY = e.clientY - backImg.getBoundingClientRect().top;
+    backImg.style.cursor = "grabbing";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    targetX = e.clientX - offsetX;
+    targetY = e.clientY - offsetY;
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (!isDragging) return;
+    isDragging = false;
+    backImg.style.cursor = "grab";
+    targetX = originalPosition.left;
+    targetY = originalPosition.top;
+  });
+
+  // Button press → cat moves up
+  button.addEventListener("mousedown", () => {
+    backImg.style.transform = "translateY(-10px)";
+  });
+
+  // Button release → cat returns
+  button.addEventListener("mouseup", () => {
+    backImg.style.transform = "translateY(0)";
+  });
+
+  animate();
+</script>
+
+</body>
+</html>
