@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Draggable Back Image</title>
+<style>
+  body {
+    background: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+  }
+
+  /* Main button as image */
+  .image-button {
+    border: none;
+    padding: 0;
+    background: none;
+    position: relative;
+    cursor: pointer;
+    z-index: 2; /* Make sure it's in front */
+  }
+  .image-button img {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+  }
+
+  /* Back draggable image */
+  .back-img {
+    position: absolute;
+    width: 80px;
+    top:39%;
+    z-index: 1; /* Behind button */
+    cursor: grab;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- Draggable BACK image -->
+<img class="back-img" src="./dragcat.png" alt="Back Image">
+
+<!-- Button in front -->
+<button class="image-button">
+  <img src="./dragme.png" alt="Button Image">
+</button>
+
+<script>
+  const backImg = document.querySelector(".back-img");
+  const originalPosition = { top: backImg.offsetTop, left: backImg.offsetLeft };
+  let isDragging = false;
+  let offsetX, offsetY;
+
+  backImg.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    offsetX = e.clientX - backImg.getBoundingClientRect().left;
+    offsetY = e.clientY - backImg.getBoundingClientRect().top;
+    backImg.style.cursor = "grabbing";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    backImg.style.top = `${e.clientY - offsetY}px`;
+    backImg.style.left = `${e.clientX - offsetX}px`;
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (!isDragging) return;
+    isDragging = false;
+    backImg.style.cursor = "grab";
+
+    // Snap back animation
+    backImg.style.transition = "top 0.3s ease, left 0.3s ease";
+    backImg.style.top = originalPosition.top + "px";
+    backImg.style.left = originalPosition.left + "px";
+
+    setTimeout(() => {
+      backImg.style.transition = "";
+    }, 300);
+  });
+</script>
+
+</body>
+</html>
