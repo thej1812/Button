@@ -1,0 +1,63 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Hover with Button</title>
+<style>
+  body {
+    background: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+  }
+
+  /* Main image with hover change */
+  .hover-img {
+    width: 300px;
+    height: auto;
+    cursor: pointer;
+    transition: 0.1s;
+  }
+  .hover-img:hover {
+    content: url("screaming-cat-pixel-art-meme-600nw-2421703801-removebg-preview.png"); /* Change this to your hover image */
+  }
+
+  /* Button as image - centered above */
+  .btn-img {
+    position: absolute;
+    top: 70%; /* distance above image */
+    left: 50%;
+    transform: translateX(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-img img {
+    width: 160px;
+    height: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Button as image -->
+  <button class="btn-img">
+    <img src="hover.png" alt="Button">
+  </button>
+
+  <!-- Main image with hover effect -->
+  <img src="cute-cat-smiling-pixel-art-600nw-2414664891-removebg-preview.png" alt="Main" class="hover-img">
+</div>
+
+</body>
+</html>
