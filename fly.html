@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smooth Floating Animation</title>
+<style>
+  body {
+    background: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Main button */
+  .image-button {
+    border: none;
+    padding: 0;
+    background: none;
+    position: relative;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .image-button img {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+  }
+
+  /* Back image */
+  .back-img {
+    position: absolute;
+    width: 180px;
+    top: 39%;
+    left: 40%;
+    z-index: 1;
+    user-select: none;
+  }
+
+  /* Smooth fly animation */
+  .fly-away {
+    animation: smoothFlyUp 5s ease-in-out forwards;
+  }
+
+  @keyframes smoothFlyUp {
+    0%   { transform: translateX(0) translateY(0); opacity: 1; }
+    20%  { transform: translateX(-8px) translateY(-60px); opacity: 0.95; }
+    40%  { transform: translateX(8px) translateY(-130px); opacity: 0.85; }
+    60%  { transform: translateX(-6px) translateY(-200px); opacity: 0.65; }
+    80%  { transform: translateX(6px) translateY(-270px); opacity: 0.4; }
+    100% { transform: translateX(0) translateY(-350px); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back image -->
+<img class="back-img" src="./catballon.png" alt="Back Image">
+
+<!-- Button -->
+<button class="image-button">
+  <img src="./clickme.png" alt="Button Image">
+</button>
+
+<script>
+  const backImg = document.querySelector(".back-img");
+  const btn = document.querySelector(".image-button");
+  const originalPosition = { top: backImg.offsetTop, left: backImg.offsetLeft };
+
+  // On button click, make the back image fly away smoothly
+  btn.addEventListener("click", () => {
+    backImg.classList.add("fly-away");
+
+    // Reset after animation so you can click again
+    setTimeout(() => {
+      backImg.classList.remove("fly-away");
+      backImg.style.transform = "";
+      backImg.style.opacity = 1;
+      backImg.style.top = originalPosition.top + "px";
+      backImg.style.left = originalPosition.left + "px";
+    }, 5200);
+  });
+</script>
+
+</body>
+</html>
